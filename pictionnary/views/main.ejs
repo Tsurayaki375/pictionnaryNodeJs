@@ -1,0 +1,21 @@
+<% var title = 'Page principale' %>
+<% include head %>
+<% include header %>
+
+<div>
+	<% if (erreur) { %>
+	<div class="red"><%= erreur %></div>
+	<% } %>
+	<p>
+		<a href="paint.php">Commencer un dessin !</a>
+	</p>
+</div>
+<!-- Placez cette balise dans l'en-tête ou juste avant la balise de fermeture du corps de texte. -->
+<script src="https://apis.google.com/js/platform.js" async defer>
+  {lang: 'fr'}
+</script>
+
+<!-- Placez cette balise où vous souhaitez faire apparaître le gadget Bouton +1. -->
+<div class="g-plusone" data-annotation="inline" data-width="300"></div>
+
+<% include foot %>

@@ -1,0 +1,167 @@
+<% var title = 'Page de modification du profil' %>
+<% include head %>
+<% include header %>
+
+<h1>Modification de vos informations</h1>
+<h3>Veuillez changer les champs &agrave; modifier</h3>
+
+<p><span class="required_notification">Les champs obligatoires sont indiqu&eacute;s par *</span></p>
+<form method="get" action="/register">
+    <p>
+        <label for="email">Adresse email :</label>
+        <input type="email" value="<%= email %>" name="email" id="email" autofocus required/>
+        <span class="form_hint">Format attendu "name@something.com"</span>
+    </p>
+
+    <p>
+        <label for="mdp1">Mot de passe :</label>
+        <input type="password" value="******" name="password" id="mdp1" pattern="^([a-zA-Z0-9]){6,8}$" onkeyup="validateMdp2()" required placeholder = "Le mot de passe doit contenir de 6 &agrave; 8 caract&egrave;res alphanum&eacute;riques." title = "Le mot de passe doit contenir de 6 &agrave; 8 caract&egrave;res alphanum&eacute;riques.">
+        <span class="form_hint">De 6 &agrave; 8 caract&egrave;res alphanum&eacute;riques.</span>
+    </p>
+
+    <p>
+        <label for="mdp2">Confirmer le mot de passe :</label>
+        <input type="password" value="******" id="mdp2" required onkeyup="validateMdp2()" required placeholder = "Le mot de passe doit contenir de 6 &agrave; 8 caract&egrave;res alphanum&eacute;riques.">
+        <span class="form_hint">Les mots de passes doivent &ecirc;tre &eacute;gaux.</span>
+        <script>
+            validateMdp2 = function(e) {
+                var mdp1 = document.getElementById('mdp1').value;
+                var mdp2 = document.getElementById('mdp2').value;
+                var er = /^([a-zA-Z0-9]){6,8}$/;
+                if (er.test(mdp1) && mdp1==mdp2)
+                    document.getElementById('mdp2').setCustomValidity('');
+                else
+                    document.getElementById('mdp2').setCustomValidity('Les mots de passes doivent &ecirc;tre &eacute;gaux.');
+            }
+        </script>
+    </p>
+
+    <p>
+        <label for="nom">Nom :</label>
+        <input type="text" value="<%= nom %>" name="nom" id="nom"/>
+    </p>
+
+    <p>
+        <label for="prenom">Pr&eacute;nom :</label>
+        <input type="text" value="<%= prenom %>" name="prenom" id="prenom" required placeholder = "Entrer votre pr&eacute;nom ici."/>
+    </p>
+
+    <p>
+        <label for="tel">Num&eacute;ro de t&eacute;l&eacute;phone :</label>
+        <input type="tel" value="<%= tel %>" name="tel" id="tel"/>
+    </p>
+
+    <p>
+        <label for="website">Site web :</label>
+        <input type="url" value="<%= website %>" name="website" id="website"/>
+    </p>
+
+    <p>
+        Quel est votre sexe?
+    </p>
+
+    <p>
+        <label for="male">Masculin :</label>
+        <input type="radio" name="sexe" id="male" value="H" checked />
+    </p>
+
+    <p>
+        <label for="female">F&eacute;minin :</label>
+        <input type="radio" name="sexe" id="female" value="F" />
+    </p>
+
+    <p>
+        <label for="other">Autre :</label>
+        <input type="radio" name="sexe" id="other" value="" />
+    </p>
+
+    <p>
+        <label for="birthdate">Date de naissance :</label>
+        <input type="date" value="<%= birthdate %>" name="birthdate" id="birthdate" placeholder="JJ/MM/AAAA" required onchange="computeAge()"/>
+        <script>
+            computeAge = function(e) {
+                try{
+                    var from = document.getElementById("birthdate").value.split("/");
+                    var f = new Date(from[2], from[1] - 1, from[0]);
+                    var birthday = new Date(f);
+                    var result = new Number((new Date().getTime() - birthday.getTime()) / 31536000000).toFixed(0);
+                    document.getElementById("age").value = result;
+                } catch(e) {
+                    document.getElementById("age").value="";
+                }
+            }
+        </script>
+        <span class="form_hint">Format attendu "JJ/MM/AAAA"</span>
+    </p>
+
+    <p>
+        <label for="age">Age :</label>
+        <input type="number"  name="age" id="age" disabled/>
+    </p>
+
+    <p>
+        <label for="ville">Ville :</label>
+        <input type="text" value="<%= ville %>" name="ville" id="ville"/>
+    </p>
+
+    <p>
+        <label for="taille">Taille :</label>
+        0m<input type="range" value="<%= taille %>" max="2,50" min="0" step="0.01" name="taille" id="taille" style="display:inline-block; vertical-align:middle"/>2,50m
+    </p>
+
+    <p>
+        <label for="couleurPreferee">Couleur pr&eacute;f&eacute;r&eacute;e :</label>
+        <input type="color" value="<%= couleur %>" name="couleur" id="couleur"/>
+    </p>
+
+    <p>
+        <label for="profilepicfile">Photo de profil :</label>
+        <input type="file" value="<%= profilepic %>" onchange="loadProfilePic(this)"/>
+        <span class="form_hint">Choisissez une image.</span>
+        <input type="hidden" name="profilepic" id="profilepic"/>
+        <canvas id="preview" width="0" height="0"></canvas>
+        <script>
+            loadProfilePic = function (e) {
+                var canvas = document.getElementById("preview");
+                var ctx = canvas.getContext("2d");
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.fillRect(0,0,canvas.width,canvas.height);
+                canvas.width=0;
+                canvas.height=0;
+                var file = document.getElementById("profilepicfile").files[0];
+                var img = document.createElement("img");
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    if (!file.type.match(/image.*/)) {
+                        document.getElementById("profilepicfile").setCustomValidity("Il faut telecharger une image.");
+                        document.getElementById("profilepicfile").value = "";
+                    }
+                    else {
+                        img.src = e.target.result;
+                        document.getElementById("profilepicfile").setCustomValidity("");
+                        var MAX_WIDTH = 96;
+                        var MAX_HEIGHT = 96;
+                        var width = img.width;
+                        var height = img.height;
+                        var ratiow = MAX_WIDTH/width;
+                        var ratioh = MAX_HEIGHT/height;
+                        width = width*ratiow;
+                        height = height*ratioh;
+                        canvas.width = width;
+                        canvas.height = height;
+                        ctx.drawImage(img, 0, 0, width, height);
+                        var dataurl = canvas.toDataURL("image/png");
+                        document.getElementById("profilepic").value = dataurl;
+                    };
+                }
+                reader.readAsDataURL(file);
+            }
+        </script>
+    </p>
+
+    <p>
+        <input type="submit" value="S'inscrire">
+    </p>
+</form>
+
+<% include foot %>

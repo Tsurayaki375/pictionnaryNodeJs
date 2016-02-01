@@ -1,0 +1,11 @@
+<% var title = 'Suppression du compte' %>
+<% include head %>
+    <h3>Votre compte &agrave; &eacute;t&eacute; supprim&eacute; avec succ&eacute;s !</h3>
+    <br />
+    <h3>Vous allez &ecirc;treredirig&eacute; vers la page de login dans quelques secondes...</h3>
+<% include foot %>
+
+<script>
+    var redirect = 'window.location.replace("/");';
+    setTimeout(redirect,3000);
+</script>

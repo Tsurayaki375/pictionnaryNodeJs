@@ -1,0 +1,38 @@
+<% var title = 'Page de profil' %>
+<% include head %>
+<% include header %>
+<div>
+    <p>Votre profil :</p>
+    <br />
+    <p>Adresse Email : <%= email %></p>
+    <p>Nom : <%= nom %></p>
+    <p>Pr&eacute;nom : <%= prenom %></p>
+    <p>Num&eacute;ro de t&eacute;l&eacute;phone : <%= tel %></p>
+    <p>Site web : <%= web %></p>
+    <p>Sexe : <%= sexe %></p>
+    <p>Date de naissance : <%= birthdate %></p>
+    <p>Ville: <%= ville %></p>
+    <p>Taille: <%= taille %></p>
+    <p>>Couleur pr&eacute;f&eacute;r&eacute;e : <%= couleur %></p>
+    <p>Votre image: <img src="<%= profilepic %>"/</p>
+</div>
+
+<div>
+    <br />
+    <p></p><a href="/main">Page principale</a></p>
+    <p><a href="/modification">Modifier mes informations</a></p>
+    <p><a href="" oncLick=confirm()>Supprimer mon compte </a></p>
+</div>
+
+<script>
+    function confirm(){
+        var msg = "Vous désirez vraiment supprimer votre profil?"
+        if (confirm(msg)) {
+            document.location.href="delete.ejs"
+        }
+        else{
+            document.location.href="profile.ejs"
+        }
+    }
+</script>
+<% include foot %>
